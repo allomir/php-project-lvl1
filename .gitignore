@@ -1,0 +1,4 @@
+
+/vendor/
+*.code-workspace
+-faq journal.txt
