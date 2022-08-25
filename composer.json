@@ -1,16 +1,18 @@
 {
     "name": "hexlet/code",
     "type": "project",
-    "autoload": {
-        "psr-4": {
-            "Hexlet\\Code\\": "src/"
-        }
-    },
+    "description": "hexlet study project",
+    "license": "MIT",
     "authors": [
         {
             "name": "allomir",
             "email": "alomir@yandex.ru"
         }
     ],
+    "autoload": {
+        "psr-4": {
+            "Hexlet\\Code\\": "src/"
+        }
+    },
     "require": {}
 }
