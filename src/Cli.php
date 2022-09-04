@@ -17,7 +17,7 @@ function getAnswerLine($question): string
     return $answer;
 }
 
-function printStringVar($strVar, $var, $var2 = '')
+function printStringVar($strVar, $var, ...$vars)
 {
-    line($strVar, $var, $var2);
+    line($strVar, $var, ...$vars);
 }

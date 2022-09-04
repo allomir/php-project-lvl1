@@ -18,9 +18,11 @@ const templateUserLosing = "Let's try again, %s!";
 
 const gameAnswers = [true => 'yes', false => 'no'];
 const gameStatuses = [true => 'Correct!', false => "'%s' is wrong answer ;(. Correct answer was '%s'."];
-const gameIteration = 3;
+
 const gameValueMin = 1;
 const gameValueMax = 100;
+
+$gameIteration = 3;
 
 function gameValue()
 {
@@ -39,12 +41,12 @@ function printQuestion($lineQuestionVar)
     printStringVar(templateQuestion, $lineQuestionVar);
 }
 
-function getUserAnswerBool()
+function getUserAnswer()
 {
     $userAnswer = getAnswerLine(lineAnswer);
     $userAnswerBool = gameAnswers[true] === $userAnswer ? true : false;
 
-    return $userAnswerBool;
+    return ['string' => $userAnswer, 'bool' => $userAnswerBool];
 }
 
 function game() {
@@ -54,13 +56,13 @@ function game() {
     $lineQuestionVar = $gameValue;
     printQuestion($lineQuestionVar);
 
-    $userAnswer = getUserAnswerBool();
+    $userAnswer = getUserAnswer();
 
-    if ($gameAnswer !== $userAnswer ) {
-        if ($userAnswer) {
-            printStringVar(gameStatuses[false], gameAnswers[true], gameAnswers[false]);
+    if ($gameAnswer !== $userAnswer['bool']) {
+        if ($userAnswer['bool']) {
+            printStringVar(gameStatuses[false], gameAnswers[true], $userAnswer['string']);
         } else {
-            printStringVar(gameStatuses[false], gameAnswers[false], gameAnswers[true]);
+            printStringVar(gameStatuses[false], $userAnswer['string'], gameAnswers[true]);
         }
         return false;
     }
@@ -71,13 +73,13 @@ function game() {
 
 printString(lineGameTask);
 
-$gameResult = true;
-for ($i = 1; $i <= gameIteration; $i += 1)
+$gameResult = game();
+while ($gameResult && ($gameIteration - 1 > 0))
 {
-    if (!game()){
-        $gameResult = false;
-        break;
-    }
+    $gameResult = game();
+    $gameIteration -= 1;
 }
 
-$gameResult  ? printStringVar(templateUserVictory, $userName) : printStringVar(templateUserLosing, $userName);
+$gameResult 
+    ? printStringVar(templateUserVictory, $userName)
+    : printStringVar(templateUserLosing, $userName);
