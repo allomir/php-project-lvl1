@@ -1,0 +1,83 @@
+#!/usr/bin/env php
+
+<?php
+
+require_once __DIR__ . '/brain-games';
+
+use function BrainGames\Cli\printString;
+use function BrainGames\Cli\getAnswerLine;
+use function BrainGames\Cli\printStringVar;
+
+
+const lineGameTask = "Answer \"yes\" if the number is even, otherwise answer \"no\".";
+const lineAnswer = 'Your answer';
+
+const templateQuestion = "Question: %s";
+const templateUserVictory = "Congratulations, %s!";
+const templateUserLosing = "Let's try again, %s!";
+
+const gameAnswers = [true => 'yes', false => 'no'];
+const gameStatuses = [true => 'Correct!', false => "'%s' is wrong answer ;(. Correct answer was '%s'."];
+const gameIteration = 3;
+const gameValueMin = 1;
+const gameValueMax = 100;
+
+function gameValue()
+{
+    return rand(gameValueMin, gameValueMax);
+}
+
+function gameSolution($var)
+{
+    $result = $var % 2 === 0;
+
+    return $result;
+}
+
+function printQuestion($lineQuestionVar)
+{
+    printStringVar(templateQuestion, $lineQuestionVar);
+}
+
+function getUserAnswerBool()
+{
+    $userAnswer = getAnswerLine(lineAnswer);
+    $userAnswerBool = gameAnswers[true] === $userAnswer ? true : false;
+
+    return $userAnswerBool;
+}
+
+function game() {
+    $gameValue = gameValue();
+    $gameAnswer = gameSolution($gameValue);
+
+    $lineQuestionVar = $gameValue;
+    printQuestion($lineQuestionVar);
+
+    $userAnswer = getUserAnswerBool();
+
+    if ($gameAnswer !== $userAnswer ) {
+        if ($userAnswer) {
+            printStringVar(gameStatuses[false], gameAnswers[true], gameAnswers[false]);
+        } else {
+            printStringVar(gameStatuses[false], gameAnswers[false], gameAnswers[true]);
+        }
+        return false;
+    }
+
+    printString(gameStatuses[true]);
+    return true;
+}
+
+printString(lineGameTask);
+
+$gameResult = true;
+for ($i = 1; $i <= gameIteration; $i += 1)
+{
+    if (!game()){
+        $gameResult = false;
+        break;
+    }
+}
+
+$gameResult  ? printStringVar(templateUserVictory, $userName) : printStringVar(templateUserLosing, $userName);
