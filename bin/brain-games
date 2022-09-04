@@ -2,10 +2,17 @@
 
 <?php
 
-use function BrainGames\Cli\greeting;
-use function BrainGames\Cli\whatIsName;
+use function BrainGames\Cli\printString;
+use function BrainGames\Cli\getAnswerLine;
+use function BrainGames\Cli\printStringVar;
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
-greeting();
-whatIsName();
+$templateUserGreeting = "Hello, %s!";
+$lineGreeting = "Welcome to the Brain Games!";
+$userNameDefault = 'noname';
+$lineQuestionName = 'May I have your name?';
+
+printString($lineGreeting);
+$userName = getAnswerLine($lineQuestionName) ?: $userNameDefault;
+printStringVar($templateUserGreeting, $userName);
