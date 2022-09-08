@@ -5,7 +5,7 @@
 require_once __DIR__ . '/brain-games';
 
 use function BrainGames\Cli\printString;
-use function BrainGames\Cli\getAnswerLine;
+use function BrainGames\Cli\getStringLine;
 use function BrainGames\Cli\printStringVar;
 
 
@@ -43,7 +43,7 @@ function printQuestion($lineQuestionVar)
 
 function getUserAnswer()
 {
-    $userAnswer = getAnswerLine(lineAnswer);
+    $userAnswer = getStringLine(lineAnswer);
     $userAnswerBool = gameAnswers[true] === $userAnswer ? true : false;
 
     return ['string' => $userAnswer, 'bool' => $userAnswerBool];
