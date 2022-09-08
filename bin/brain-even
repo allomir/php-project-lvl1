@@ -19,14 +19,14 @@ const templateUserLosing = "Let's try again, %s!";
 const gameAnswers = [true => 'yes', false => 'no'];
 const gameStatuses = [true => 'Correct!', false => "'%s' is wrong answer ;(. Correct answer was '%s'."];
 
-const gameValueMin = 1;
-const gameValueMax = 100;
+const gameTaskParamMin = 1;
+const gameTaskParamMax = 100;
 
 $gameIteration = 3;
 
-function gameValue()
+function gameTask($gameTaskParamMin = gameTaskParamMin, $gameTaskParamMax = gameTaskParamMax)
 {
-    return rand(gameValueMin, gameValueMax);
+    return rand($gameTaskParamMin, $gameTaskParamMax);
 }
 
 function gameSolution($var)
@@ -50,7 +50,7 @@ function getUserAnswer()
 }
 
 function game() {
-    $gameValue = gameValue();
+    $gameValue = gameTask();
     $gameAnswer = gameSolution($gameValue);
 
     $lineQuestionVar = $gameValue;
