@@ -10,14 +10,14 @@ function printString($str)
     line($str);
 }
 
-function getAnswerLine($question): string
+function getStringLine($question): string
 {
-    $answer = prompt($question, '', ' > ');
+    $answer = prompt($question, '', '');
 
     return $answer;
 }
 
-function printStringVar($strVar, $var, ...$vars)
+function printStringVar($strVar, ...$vars)
 {
-    line($strVar, $var, ...$vars);
+    line($strVar, ...$vars);
 }

@@ -19,7 +19,9 @@
             "BrainGames\\": "src/"
         },
         "files": [
-            "src/Cli.php"
+            "src/Cli.php",
+            "src/Engine.php",
+            "src/Games.php"
         ]
     },
     "require": {
