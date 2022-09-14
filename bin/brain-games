@@ -2,12 +2,8 @@
 
 <?php
 
-use function BrainGames\Engine\printGreetingStart;
-use function BrainGames\Engine\setUser;
-use function BrainGames\Engine\printGreetingUser;
+use function BrainGames\Engine\startMain;
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
-printGreetingStart();
-$user = setUser();
-printGreetingUser($user);
+startMain();

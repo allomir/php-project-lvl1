@@ -15,10 +15,10 @@ function getListTasks()
     ];
 }
 
-function getTaskRules()
+function taskRules()
 {
     return [
-        'Answer "yes" if the number is even, otherwise answer "no".'
+        'brain-even' => 'Answer "yes" if the number is even, otherwise answer "no".'
     ];
 }
 
@@ -78,9 +78,9 @@ function taskEven(...$params)
     return rand($paramMin, $paramMax);
 }
 
-function taskSolutionEven($var)
+function taskSolutionEven($task)
 {
-    $result = $var % 2 === 0;
+    $result = $task % 2 === 0;
 
     return $result;
 }

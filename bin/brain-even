@@ -2,19 +2,19 @@
 
 <?php
 
-use function BrainGames\Engine\printGreetingStart;
-use function BrainGames\Engine\setUser;
-use function BrainGames\Engine\printStringVar;
-
-require_once __DIR__ . '/brain-games';
-
-use function BrainGames\Engine\getGameParams;
-use function BrainGames\Engine\game;
+use function BrainGames\Engine\startMain;
+use function BrainGames\Engine\startGame;
+use function BrainGames\Engine\gameSeria;
+use function BrainGames\Engine\printRules;
 use function BrainGames\Engine\printGameStatus;
 use function BrainGames\Engine\printTotalStatus;
 
-$gameParams = getGameParams('brain-even');
-$result = game($gameParams);
-printGameStatus($result, $gameParams);
-$totalResult = $result;
-printTotalStatus($totalResult, $user);
+require_once __DIR__ . '/../vendor/autoload.php';
+
+$mainParams = startMain();
+$gameParams = startGame('brain-even');
+
+$results = gameSeria($gameParams);
+
+$totalResult = $results[array_key_last($results)];
+printTotalStatus($totalResult, $mainParams['userName']);
