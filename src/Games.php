@@ -49,27 +49,12 @@ function taskQuestions($gameName, $task)
     }
 }
 
-function taskResultStatuses($gameName)
+function taskResults($gameName)
 {
     switch($gameName) {
         case 'brain-even':
         case 0:
-            return [true => 'Correct!', false => "'%s' is wrong answer ;(. Correct answer was '%s'."];
-        break;
-    }
-}
-
-function convertTaskResults($gameName, $taskResult = null)
-{
-    switch($gameName) {
-        case 'brain-even':
-        case 0:
-            $taskResults = [true => ['yes'], false => ['no']];
-            if ($taskResult === null) {
-                return $taskResults;
-            }
-
-            return $taskResults[$taskResult];
+            return [true => ['yes'], false => ['no']];
         break;
     }
 }
@@ -79,7 +64,7 @@ function compareResults($gameName, $taskResult, $userAnswer)
     switch($gameName) {
         case 'brain-even':
         case 0:
-            $userResult = in_array($userAnswer, convertTaskResults($gameName)[true]);
+            $userResult = in_array($userAnswer, taskResults($gameName)[true]);
             return $userResult === $taskResult;
         break;
     }

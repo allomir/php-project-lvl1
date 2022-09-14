@@ -10,7 +10,7 @@ use function BrainGames\Games\tasks;
 use function BrainGames\Games\taskSolutions;
 use function BrainGames\Games\taskQuestions;
 use function BrainGames\Games\compareResults;
-use function BrainGames\Games\convertTaskResults;
+use function BrainGames\Games\taskResults;
 
 #GAMES-start: brain-games
 function printGreetingStart()
@@ -38,7 +38,7 @@ function setUser()
 }
 
 #game-kinds, game-unit: one-task
-function setGameParams($gameName, $gameAmount = null)
+function getGameParams($gameName, $gameAmount = null)
 {
     return [
         'name' => $gameName,
@@ -66,7 +66,7 @@ function game(&$gameParams) {
 
     $task = tasks($gameParams['name']);
     $taskResult = taskSolutions($gameParams['name'], $task);
-    $gameParams['taskResultConverted'] = convertTaskResults($gameParams['name'], $taskResult);
+    $gameParams['taskResultConverted'] = taskResults($gameParams['name'])[$taskResult];
 
     $taskQuestion = taskQuestions($gameParams['name'], $task);
     printQuestion($gameParams, $taskQuestion);

@@ -8,12 +8,12 @@ use function BrainGames\Engine\printStringVar;
 
 require_once __DIR__ . '/brain-games';
 
-use function BrainGames\Engine\setGameParams;
+use function BrainGames\Engine\getGameParams;
 use function BrainGames\Engine\game;
 use function BrainGames\Engine\printGameStatus;
 use function BrainGames\Engine\printTotalStatus;
 
-$gameParams = setGameParams('brain-even');
+$gameParams = getGameParams('brain-even');
 $result = game($gameParams);
 printGameStatus($result, $gameParams);
 $totalResult = $result;
