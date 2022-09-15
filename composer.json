@@ -3,7 +3,8 @@
     "bin": 
         [
             "bin/brain-games",
-            "bin/brain-even"
+            "bin/brain-even",
+            "bin/brain-calc"
         ],
     "type": "project",
     "description": "hexlet study project",
