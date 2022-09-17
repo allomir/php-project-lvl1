@@ -12,7 +12,7 @@ use function BrainGames\Games\compareResults;
 use function BrainGames\Games\taskResults;
 use function BrainGames\Games\taskRules;
 
-#BASE
+#СOMMON
 function printStrings($name, $gameParams = null)
 {
     $string = '';
@@ -38,7 +38,7 @@ function printStringsVars($name, ...$vars)
     printStringVar($strings[$name], ...$vars);
 }
 
-#GAMES-start: brain-games
+#GAMES-startMain: brain-games
 function startMain()
 {
     $mainParams = getMainParams();
@@ -48,13 +48,6 @@ function startMain()
     return $mainParams;
 }
 
-function getUserName()
-{
-    $userName = getStringLine('May I have your name?') ?: 'noname';
-
-    return $userName;
-}
-
 function getMainParams()
 {
     return [
@@ -62,7 +55,14 @@ function getMainParams()
     ];
 }
 
-#game-kinds, game-unit: one-task
+function getUserName()
+{
+    $userName = getStringLine('May I have your name?') ?: 'noname';
+
+    return $userName;
+}
+
+#UNIT-game: one task
 function startGame($gameName, $gameAmount = null)
 {
     $gameParams = getGameParams();
@@ -71,32 +71,6 @@ function startGame($gameName, $gameAmount = null)
     printStrings('rules', $gameParams);
 
     return $gameParams;
-}
-
-function getGameParams()
-{
-    return [
-        'name' => null,
-        'amount' => 3,
-        'taskResult' => null,
-        'userAnswer' => null
-    ];
-}
-
-function getUserAnswer(&$gameParams)
-{
-    $lineAnswer = 'Your answer: ';
-    $gameParams['userAnswer'] = getStringLine($lineAnswer);
-
-    return $gameParams['userAnswer'];
-}
-
-function getGameQuestion(&$gameParams)
-{
-    $task = tasks($gameParams['name']);
-    $gameParams['taskResult'] = taskSolutions($gameParams['name'], $task);
-
-    return taskQuestions($gameParams['name'], $task);
 }
 
 function game(&$gameParams)
@@ -125,6 +99,32 @@ function gameSeria(&$gameParams)
     }
 
     return $results;
+}
+
+function getGameParams()
+{
+    return [
+        'name' => null,
+        'amount' => 3,
+        'taskResult' => null,
+        'userAnswer' => null
+    ];
+}
+
+function getUserAnswer(&$gameParams)
+{
+    $lineAnswer = 'Your answer: ';
+    $gameParams['userAnswer'] = getStringLine($lineAnswer);
+
+    return $gameParams['userAnswer'];
+}
+
+function getGameQuestion(&$gameParams)
+{
+    $task = tasks($gameParams['name']);
+    $gameParams['taskResult'] = taskSolutions($gameParams['name'], $task);
+
+    return taskQuestions($gameParams['name'], $task);
 }
 
 function printGameStatus($gameResult, $gameParams)
