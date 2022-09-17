@@ -78,7 +78,6 @@ function taskResults($gameName, $taskResult = null)
 
 function compareResults($gameName, $taskResult, $userAnswer)
 {
-    echo '!!!'; echo $gameName;
     switch ($gameName) {
         case 'brain-even':
             $taskResults = taskResults($gameName);

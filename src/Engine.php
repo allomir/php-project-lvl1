@@ -17,7 +17,7 @@ function printStrings($name, $gameParams = null)
 {
     $string = '';
     switch ($name) {
-        case 'greeting':
+        case 'greetingMain':
             $string = "Welcome to the Brain Games!";
             break;
         case 'rules':
@@ -42,7 +42,8 @@ function printStringsVars($name, ...$vars)
 function startMain()
 {
     $mainParams = getMainParams();
-    printStrings('greeting');
+    getParamUserName($mainParams);
+    printStrings('greetingMain');
     printStringsVars('greetingUser', $mainParams['userName']);
 
     return $mainParams;
@@ -51,18 +52,18 @@ function startMain()
 function getMainParams()
 {
     return [
-        'userName' => getUserName()
+        'userName' => null
     ];
 }
 
-function getUserName()
+function getParamUserName(&$mainParams)
 {
-    $userName = getStringLine('May I have your name?') ?: 'noname';
+    $mainParams['userName'] = getStringLine('May I have your name?') ?: 'noname';
 
-    return $userName;
+    return $mainParams['userName'];
 }
 
-#UNIT-game: one task
+#UNIT(measure)-game: one task
 function startGame($gameName, $gameAmount = null)
 {
     $gameParams = getGameParams();
