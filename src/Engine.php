@@ -76,8 +76,11 @@ function startGame($gameName, $gameAmount = null)
 
 function game(&$gameParams)
 {
-    $gameQuestion = getGameQuestion($gameParams);
-    printStringsVars('question', $gameQuestion);
+    $task = tasks($gameParams['name']);
+    $gameParams['taskResult'] = taskSolutions($gameParams['name'], $task);
+
+    $taskQuestion = taskQuestions($gameParams['name'], $task);
+    printStringsVars('question', $taskQuestion);
     getUserAnswer($gameParams);
 
     return compareResults($gameParams['name'], $gameParams['taskResult'], $gameParams['userAnswer']);
@@ -118,14 +121,6 @@ function getUserAnswer(&$gameParams)
     $gameParams['userAnswer'] = getStringLine($lineAnswer);
 
     return $gameParams['userAnswer'];
-}
-
-function getGameQuestion(&$gameParams)
-{
-    $task = tasks($gameParams['name']);
-    $gameParams['taskResult'] = taskSolutions($gameParams['name'], $task);
-
-    return taskQuestions($gameParams['name'], $task);
 }
 
 function printGameStatus($gameResult, $gameParams)

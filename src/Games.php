@@ -10,7 +10,8 @@ function getListTasks()
 {
     return [
         'brain-even',
-        'brain-calc'
+        'brain-calc',
+        'brain-gcd',
     ];
 }
 
@@ -19,6 +20,7 @@ function taskRules()
     return [
         'brain-even' => 'Answer "yes" if the number is even, otherwise answer "no".',
         'brain-calc' => 'What is the result of the expression?',
+        'brain-gcd' => 'Find the greatest common divisor of given numbers.',
     ];
 }
 
@@ -30,6 +32,9 @@ function tasks($gameName, $params = [])
             break;
         case 'brain-calc':
             return taskCalculator($params = []);
+            break;
+        case 'brain-gcd':
+            return taskGCD($params = []);
             break;
     }
 }
@@ -43,6 +48,9 @@ function taskSolutions($gameName, $task)
         case 'brain-calc':
             return taskSolutionCalculator($task);
             break;
+        case 'brain-gcd':
+            return taskSolutionGCD($task);
+            break;
     }
 }
 
@@ -55,6 +63,9 @@ function taskQuestions($gameName, $task)
         case 'brain-calc':
             return "{$task['num1']} {$task['operator']} {$task['num2']}";
             break;
+        case 'brain-gcd':
+            return "{$task['num1']} {$task['num2']}";
+            break;
     }
 }
 
@@ -65,6 +76,9 @@ function taskResults($gameName, $taskResult = null)
             $results = [true => ['yes'], false => ['no']];
             break;
         case 'brain-calc':
+            $results = [$taskResult => [(string) $taskResult]];
+            break;
+        case 'brain-gcd':
             $results = [$taskResult => [(string) $taskResult]];
             break;
     }
@@ -87,6 +101,11 @@ function compareResults($gameName, $taskResult, $userAnswer)
             return in_array($userAnswer, $taskResultsConverted, true);
             break;
         case 'brain-calc':
+            $taskResultsConverted = taskResults($gameName, $taskResult);
+
+            return in_array($userAnswer, $taskResultsConverted, true);
+            break;
+        case 'brain-gcd':
             $taskResultsConverted = taskResults($gameName, $taskResult);
 
             return in_array($userAnswer, $taskResultsConverted, true);
@@ -152,4 +171,37 @@ function taskSolutionCalculator($task)
     }
 
     return $taskResult;
+}
+
+#TASK-3
+function taskGCD($params = [])
+{
+    $params = array_merge([
+        'min' => 1,
+        'max' => 10
+    ], $params);
+
+    return [
+        'num1' => rand($params['min'], $params['max']),
+        'num2' => rand($params['min'], $params['max'])
+    ];
+}
+
+function taskSolutionGCD($task)
+{
+    sort($task);
+    $min = $task[array_key_first($task)];
+
+    $GCD = 1;
+    for ($i = $min; $i >= 2; $i -= 1) {
+        $GCD = $i;
+        foreach ($task as $num) {
+            if ($num % $i !== 0) {
+                $GCD = 1;
+                break;
+            }
+        }
+    }
+
+    return $GCD;
 }

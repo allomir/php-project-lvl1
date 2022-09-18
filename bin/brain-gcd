@@ -1,0 +1,20 @@
+#!/usr/bin/env php
+
+<?php
+
+use function BrainGames\Engine\startMain;
+use function BrainGames\Engine\startGame;
+use function BrainGames\Engine\gameSeria;
+use function BrainGames\Engine\printRules;
+use function BrainGames\Engine\printGameStatus;
+use function BrainGames\Engine\printTotalStatus;
+
+require_once __DIR__ . '/../vendor/autoload.php';
+
+$mainParams = startMain();
+$gameParams = startGame('brain-gcd');
+
+$results = gameSeria($gameParams);
+
+$totalResult = $results[array_key_last($results)];
+printTotalStatus($totalResult, $mainParams['userName']);
