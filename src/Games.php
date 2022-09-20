@@ -12,6 +12,7 @@ function getListTasks()
         'brain-even',
         'brain-calc',
         'brain-gcd',
+        'brain-progression',
     ];
 }
 
@@ -21,6 +22,7 @@ function taskRules()
         'brain-even' => 'Answer "yes" if the number is even, otherwise answer "no".',
         'brain-calc' => 'What is the result of the expression?',
         'brain-gcd' => 'Find the greatest common divisor of given numbers.',
+        'brain-progression' => 'What number is missing in the progression?',
     ];
 }
 
@@ -35,6 +37,9 @@ function tasks($gameName, $params = [])
             break;
         case 'brain-gcd':
             return taskGCD($params = []);
+            break;
+        case 'brain-progression':
+            return taskProgression($params = []);
             break;
     }
 }
@@ -51,6 +56,9 @@ function taskSolutions($gameName, $task)
         case 'brain-gcd':
             return taskSolutionGCD($task);
             break;
+        case 'brain-progression':
+            return taskSolutionProgression($task);
+            break;
     }
 }
 
@@ -58,13 +66,16 @@ function taskQuestions($gameName, $task)
 {
     switch ($gameName) {
         case 'brain-even':
-            return $task;
+            return "$task";
             break;
         case 'brain-calc':
             return "{$task['num1']} {$task['operator']} {$task['num2']}";
             break;
         case 'brain-gcd':
-            return "{$task['num1']} {$task['num2']}";
+            return implode(' ', $task);
+            break;
+        case 'brain-progression':
+            return implode(' ', $task['progression']);
             break;
     }
 }
@@ -79,6 +90,9 @@ function taskResults($gameName, $taskResult = null)
             $results = [$taskResult => [(string) $taskResult]];
             break;
         case 'brain-gcd':
+            $results = [$taskResult => [(string) $taskResult]];
+            break;
+        case 'brain-progression':
             $results = [$taskResult => [(string) $taskResult]];
             break;
     }
@@ -106,6 +120,11 @@ function compareResults($gameName, $taskResult, $userAnswer)
             return in_array($userAnswer, $taskResultsConverted, true);
             break;
         case 'brain-gcd':
+            $taskResultsConverted = taskResults($gameName, $taskResult);
+
+            return in_array($userAnswer, $taskResultsConverted, true);
+            break;
+        case 'brain-progression':
             $taskResultsConverted = taskResults($gameName, $taskResult);
 
             return in_array($userAnswer, $taskResultsConverted, true);
@@ -204,4 +223,54 @@ function taskSolutionGCD($task)
     }
 
     return $GCD;
+}
+
+#TASK-4 progression
+function taskProgression($params = [])
+{
+    $params = array_merge([
+        'stepMin' => 1,
+        'stepMax' => 10,
+        'keyOffsetMin' => 1,
+            # номер первого значения 1 в арифметической прогрессии, аналог ID но начинается от 1
+        'keyOffsetMax' => 100,
+        'startMin' => 1,
+        'startMax' => 10,
+        'rangeMin' => 5,
+        'rangeMax' => 10,
+        'hiddenSymbol' => '..'
+    ], $params);
+
+    $step = rand($params['stepMin'], $params['stepMax']);
+    $keyOffset = rand($params['keyOffsetMin'], $params['keyOffsetMax']);
+    $start = rand($params['startMin'], $params['startMax']);
+    $range = rand($params['rangeMin'], $params['rangeMax']);
+
+    $progression = array_fill($keyOffset, $range, $start);
+    foreach ($progression as $key => $value) {
+        $progression[$key] = $start + ($key - 1) * $step;
+    }
+
+    $keyHidden = array_rand($progression);
+    $progression[$keyHidden] = '..';
+
+    return ['progression' => $progression, 'params' => $params];
+}
+
+function taskSolutionProgression($task)
+{
+    $progression = $task['progression'];
+    $params = $task['params'];
+    $keyN = array_search($params['hiddenSymbol'], $progression, true);
+
+    $tempProgression = $progression;
+    unset($tempProgression[$keyN]);
+    $keyI = array_key_first($tempProgression);
+    $keyJ = array_key_last($tempProgression);
+    $step = ($tempProgression[$keyJ] - $tempProgression[$keyI]) / ($keyJ - $keyI);
+    $start = $tempProgression[$keyI] - ($keyI - 1) * $step;
+
+    $valueN = $start + ($keyN - 1) * $step;
+
+    return $valueN;
 }

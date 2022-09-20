@@ -5,7 +5,8 @@
             "bin/brain-games",
             "bin/brain-even",
             "bin/brain-calc",
-            "bin/brain-gcd"
+            "bin/brain-gcd",
+            "bin/brain-progression"
         ],
     "type": "project",
     "description": "hexlet study project",
