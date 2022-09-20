@@ -13,6 +13,7 @@ function getListTasks()
         'brain-calc',
         'brain-gcd',
         'brain-progression',
+        'brain-primes',
     ];
 }
 
@@ -23,6 +24,7 @@ function taskRules()
         'brain-calc' => 'What is the result of the expression?',
         'brain-gcd' => 'Find the greatest common divisor of given numbers.',
         'brain-progression' => 'What number is missing in the progression?',
+        'brain-primes' => 'Answer "yes" if given number is prime. Otherwise answer "no".',
     ];
 }
 
@@ -40,6 +42,9 @@ function tasks($gameName, $params = [])
             break;
         case 'brain-progression':
             return taskProgression($params = []);
+            break;
+        case 'brain-primes':
+            return taskPrimes($params = []);
             break;
     }
 }
@@ -59,6 +64,9 @@ function taskSolutions($gameName, $task)
         case 'brain-progression':
             return taskSolutionProgression($task);
             break;
+        case 'brain-primes':
+            return taskSolutionPrimes($task);
+            break;
     }
 }
 
@@ -77,6 +85,9 @@ function taskQuestions($gameName, $task)
         case 'brain-progression':
             return implode(' ', $task['progression']);
             break;
+        case 'brain-primes':
+            return "$task";
+            break;
     }
 }
 
@@ -94,6 +105,9 @@ function taskResults($gameName, $taskResult = null)
             break;
         case 'brain-progression':
             $results = [$taskResult => [(string) $taskResult]];
+            break;
+        case 'brain-primes':
+            $results = [true => ['yes'], false => ['no']];
             break;
     }
 
@@ -126,6 +140,13 @@ function compareResults($gameName, $taskResult, $userAnswer)
             break;
         case 'brain-progression':
             $taskResultsConverted = taskResults($gameName, $taskResult);
+
+            return in_array($userAnswer, $taskResultsConverted, true);
+            break;
+        case 'brain-primes':
+            $taskResults = taskResults($gameName);
+            in_array($userAnswer, $taskResults[true]) ?: $taskResults[false][] = $userAnswer;
+            $taskResultsConverted = $taskResults[$taskResult];
 
             return in_array($userAnswer, $taskResultsConverted, true);
             break;
@@ -273,4 +294,41 @@ function taskSolutionProgression($task)
     $valueN = $start + ($keyN - 1) * $step;
 
     return $valueN;
+}
+
+#TASK-5 primes
+function taskPrimes($params = [])
+{
+    $primes = getPrimes();
+
+    $params = array_merge([
+        'min' => 1,
+        'max' => $primes[array_key_last($primes)],
+    ], $params);
+
+    return rand($params['min'], $params['max']);
+}
+
+function getPrimes($params = [])
+{
+    $primes = [
+        2, 3, 5, 7, 11, 13, 17, 19, 23, 29,
+        31, 37, 41, 43, 47, 53, 59, 61, 67, 71,
+        73, 79, 83, 89, 97, 101, 103, 107, 109, 113,
+        127, 131, 137, 139, 149, 151, 157, 163, 167, 173,
+        179, 181, 191, 193, 197, 199, 211, 223, 227, 229
+    ];
+
+    $params = array_merge([
+        'offset' => 0,
+        'length' => count($primes)
+    ], $params);
+
+    return array_slice($primes, $params['offset'], $params['length'], true);
+}
+
+function taskSolutionPrimes($task)
+{
+    $primes = getPrimes();
+    return in_array($task, $primes, true);
 }
