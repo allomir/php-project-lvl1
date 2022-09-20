@@ -41,9 +41,9 @@ function printStringsVars($name, ...$vars)
 #GAMES-startMain: brain-games
 function startMain()
 {
+    printStrings('greetingMain');
     $mainParams = getMainParams();
     getParamUserName($mainParams);
-    printStrings('greetingMain');
     printStringsVars('greetingUser', $mainParams['userName']);
 
     return $mainParams;
